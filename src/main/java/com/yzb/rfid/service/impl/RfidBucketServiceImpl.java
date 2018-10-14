@@ -31,6 +31,7 @@ public class RfidBucketServiceImpl implements RfidBucketService {
     private JsonParseUtils jsonParseUtils;
 
     public String addBucketListTask(String orderJs) {
+
         logger.info(orderJs);
         List<Bucket> rfidOrders = jsonParseUtils.getOrderObjList(orderJs, ArrayList.class, Bucket.class);
         logger.info("addBucketListTask:--> "+rfidOrders);
