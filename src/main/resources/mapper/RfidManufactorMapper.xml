@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yzb.rfid.dao.RfidManufactorDAO">
+
+	<select id="getRfidManufactor" parameterType="string"
+		resultType="com.yzb.rfid.entity.Manufacture">
+		SELECT
+		id as id,
+		manufactor_name as manufactor_name,
+		manufactor_address as manufactor_address,
+		depot_code as depot_code,
+		create_time as create_time,
+		admin_id as admin_id
+		FROM
+		manufactor
+		WHERE
+		manufactor_name=#{manufactor_name}
+	</select>
+
+	<select id="getRfidManufactorList" parameterType="string"
+		resultType="com.yzb.rfid.entity.Manufacture">
+		SELECT
+		id as id,
+		manufactor_name as manufactor_name,
+		manufactor_address as manufactor_address,
+		depot_code as depot_code,
+		create_time as create_time,
+		admin_id as admin_id
+		FROM
+		manufactor
+		WHERE
+		admin_id=#{admin_id}
+	</select>
+
+
+	<select id="getRfidManufactorListByComp" parameterType="string"
+		resultType="com.yzb.rfid.entity.Manufacture">
+		SELECT
+		id as id,
+		manufactor_name as manufactor_name,
+		manufactor_address as manufactor_address,
+		depot_code as depot_code,
+		create_time as create_time,
+		admin_id as admin_id
+		FROM
+		manufactor
+		WHERE
+		depot_code=(SELECT depot_code FROM depot
+		WHERE
+		id=#{depots})
+	</select>
+
+</mapper>

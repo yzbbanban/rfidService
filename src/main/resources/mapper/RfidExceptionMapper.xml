@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yzb.rfid.dao.RfidExceptionDAO">
+
+	<!-- 吨桶 -->
+	<insert id="addOrderListTask" parameterType="com.yzb.rfid.entity.RfidException">
+		INSERT INTO exception_collection
+		(
+		exception,
+		exception_createTime
+		) VALUES (
+		#{exception},
+		#{exception_createTime}
+		)
+	</insert>
+
+</mapper>

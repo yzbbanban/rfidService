@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yzb.rfid.dao.RfidProductDAO">
+
+	<select id="getRfidProductList" parameterType="string"
+		resultType="com.yzb.rfid.entity.Product">
+		SELECT
+		id,
+		product_name,
+		product_code,
+		number,
+		depot_code,
+		create_time,
+		admin_id
+		FROM
+		product
+		WHERE
+		admin_id=#{admin_id}
+	</select>
+	<select id="getRfidProductListByComp" parameterType="string"
+		resultType="com.yzb.rfid.entity.Product">
+		SELECT
+		id,
+		product_name,
+		product_code,
+		number,
+		depot_code,
+		create_time,
+		admin_id
+		FROM
+		product
+		WHERE 
+		depot_code=(SELECT depot_code FROM depot 
+		WHERE
+		id=#{depots})
+		and
+		<![CDATA[  status=1 ]]>
+	</select>
+	<select id="getRfidProductByCode" parameterType="int" resultType="int">
+		select 
+			count(*)
+		from
+			product
+		where
+			product_code=#{productCode}
+	</select>
+</mapper>

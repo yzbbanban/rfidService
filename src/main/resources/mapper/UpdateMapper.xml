@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yzb.rfid.dao.RfidUpdateDAO">
+    <select id="getUpdateMsg" parameterType="string"
+            resultType="string">
+		SELECT
+		version as version
+		FROM
+		versionControl
+		order by createTime desc limit 1
+		
+	</select>
+
+    <insert id="setUpdateMsg" parameterType="com.yzb.rfid.entity.UpdateMsg">
+		insert into versionControl
+		(createTime,
+		version)
+		values
+		(#{createTime},
+		#{version}
+		)
+			
+	</insert>
+
+</mapper>

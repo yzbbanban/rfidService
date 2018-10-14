@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yzb.rfid.dao.RfidBucketDAO">
+	<!-- 吨桶 -->
+	<insert id="addOrderListTask" parameterType="com.yzb.rfid.entity.Bucket">
+		REPLACE INTO bucket
+		(
+		backet_code,
+		manufactor_id,
+		bucket_address,
+		status,
+		depot_code,
+		create_time,
+		admin_id,
+		date
+		) VALUES (
+		#{bucket_code},
+		#{manufactor_id},
+		#{bucket_address},
+		#{status},
+		#{depot_code},
+		#{create_time},
+		#{admin_id},
+		#{create_time}
+		)
+	</insert>
+
+	
+	<!-- 选出bucket对应的产品-->
+	<select id="getProductTask" parameterType="string" resultType="string">
+		SELECT
+		product_code
+		FROM
+		bucket
+		WHERE
+		backet_code=#{bucket_code}
+	</select> 
+	
+	<!-- 获取 bucket对应的状态-->
+	<select id="getBucketStatusTask" parameterType="string" resultType="string">
+		SELECT
+		status
+		FROM
+		bucket
+		WHERE
+		backet_code=#{bucket_code}
+	</select>
+	
+	<!-- 选出bucket所在区域-->
+	<select id="getBucketAddressTask" parameterType="string" resultType="string">
+		SELECT
+		bucket_address
+		FROM
+		bucket
+		WHERE
+		backet_code=#{bucket_code}
+	</select>
+	
+	
+	
+	<!-- 更新空桶状态信息 -->
+	<update id="updateOrderListMa" parameterType="com.yzb.rfid.entity.Bucket">
+		UPDATE
+		bucket
+		SET
+		bucket_address=#{bucket_address},
+		admin_id=#{admin_id},
+		date=#{create_time}
+		WHERE
+		backet_code=#{bucket_code}
+	</update>
+	
+	<!-- 更新桶周转次数信息 -->
+	<update id="updateRecordCount" parameterType="com.yzb.rfid.entity.Bucket">
+		UPDATE
+		bucket
+		SET
+		<![CDATA[record_count= record_count+1]]>
+		WHERE
+		backet_code=#{bucket_code}
+	</update>
+<!-- <if test="customer_id==-1">
+			<![CDATA[ customer_id=0 ]]>
+		</if> -->
+
+	<!-- 选出创建公司编码 -->
+	<select id="getDepotTask" parameterType="string" resultType="string">
+		SELECT
+		depot_code
+		FROM
+		bucket
+		WHERE
+		backet_code=#{bucket_code}
+	</select>
+
+	<!-- 获取客户吨桶数量 -->
+	<update id="setOrderCustomerCountTask" parameterType="int">
+		UPDATE
+		customer
+		SET
+		number = (
+		SELECT COUNT(DISTINCT bucket_code) FROM
+		customer_bucket c inner join bucket b
+		on c.bucket_code=b.backet_code
+		WHERE
+		<![CDATA[ c.status=1 ]]>
+		and <![CDATA[ b.bucket_address=2 ]]>
+		)
+		WHERE
+		id=#{customerId}
+	</update>
+
+	<!-- 吨桶 -->
+	<update id="updateOrderListTask" parameterType="com.yzb.rfid.entity.Bucket">
+		UPDATE
+		bucket
+		SET
+		admin_id=#{admin_id},
+		bucket_address=#{bucket_address},
+		<if test='product_code!=null and product_code!="" and product_code!="A"'>
+			product_code=#{product_code},
+		</if>
+		<if test='product_code=="A"'>
+			<![CDATA[ product_code="", ]]>
+		</if>
+		<if test="customer_id!=0 and customer_id!=-1">
+			customer_id=#{customer_id},
+		</if>
+		<if test="customer_id==-1">
+			<![CDATA[ customer_id=0 ]]>,
+		</if>
+		date=#{create_time}
+		WHERE
+		backet_code=#{bucket_code}
+	</update>
+
+	<!-- 产品 -->
+	<insert id="updateProOrderListTask" parameterType="com.yzb.rfid.entity.Bucket">
+		insert INTO
+		product_bucket
+		(
+		bucket_code,
+		product_code,
+		depot_code,
+		create_time,
+		admin_id,
+		status
+		)
+		VALUES
+		(
+		#{bucket_code},
+		#{product_code},
+		#{depot_code},
+		#{create_time},
+		#{admin_id},
+		#{outInStatus}
+		)
+	</insert>
+
+	<!-- 客户 -->
+	<insert id="updateCustOrderListTask" parameterType="com.yzb.rfid.entity.Bucket">
+		insert INTO
+		customer_bucket
+		(
+		bucket_code,
+		product_code,
+		depot_code,
+		customer_id,
+		create_time,
+		admin_id,
+		status
+		)
+		VALUES
+		(
+		#{bucket_code},
+		#{product_code},
+		#{depot_code},
+		#{customer_id},
+		#{create_time},
+		#{admin_id},
+		#{outInStatus}
+		)
+	</insert>
+
+	<!-- 回收 -->
+	<insert id="updateRecyOrderListTask" parameterType="com.yzb.rfid.entity.Bucket">
+		insert INTO
+		bucket_record
+		(
+		bucket_code,
+		depot_code,
+		create_time,
+		status,
+		admin_id
+		)
+		VALUES
+		(
+		#{bucket_code},
+		#{depot_code},
+		#{create_time},
+		#{bucket_address},
+		#{admin_id}
+		)
+	</insert>
+	
+	<select id="findBucketCodeByName" parameterType="string" resultType="string">
+		select 
+			product_code
+		from
+			bucket
+		where 
+			backet_code=#{bucket_code}			
+	</select>
+	
+	<select id="findCustormerByName" parameterType="string" resultType="int">
+		select 
+			customer_id
+		from
+			bucket
+		where 
+			backet_code=#{bucket_code}			
+	</select>
+	
+</mapper>

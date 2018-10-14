@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yzb.rfid.dao.UserDAO">
+	<select id="findUserByName" parameterType="string"
+		resultType="com.yzb.rfid.entity.User">
+		SELECT
+			id as id,
+			user_name as user_name,
+			password as password,
+			salt as salt,
+			email as email,
+			depots as depots,
+			create_time as create_time,
+			status as status,
+			remark as remark,
+			is_jb as is_jb,
+			pid as pid,
+			user_type
+		FROM
+			admin
+		WHERE
+			user_name=#{user_name} OR email=#{user_name}
+	</select>
+	
+	<select id="findUserById" parameterType="string"
+		resultType="com.yzb.rfid.entity.User">
+		SELECT
+			id as id,
+			user_name as user_name,
+			password as password,
+			salt as salt,
+			email as email,
+			depots as depots,
+			create_time as create_time,
+			status as status,
+			remark as remark,
+			is_jb as is_jb,
+			pid as pid,
+			user_type
+		FROM
+			admin
+		WHERE
+			id = #{id}
+	</select>
+	<select id="findUsers" parameterType="string"
+		resultType="com.yzb.rfid.entity.User">
+		SELECT
+			id as id,
+			user_name as user_name,
+			password as password,
+			salt as salt,
+			email as email,
+			depots as depots,
+			create_time as create_time,
+			status as status,
+			remark as remark,
+			is_jb as is_jb,
+			pid as pid,
+			user_type
+		FROM
+			admin
+	</select>
+	
+	<update id="updateUserById" parameterType="com.yzb.rfid.entity.User">
+		update admin
+		set user_type=#{user_type}
+		where id=#{id}
+	</update>
+
+</mapper>
