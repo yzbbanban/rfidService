@@ -45,5 +45,10 @@
 <body>
 	<input type="text" id="verison" value="" />
 	<input type="button" value="提交" id="submit" />
+	<form action="/rfid/uploadApk" method="POST" enctype="multipart/form-data">
+		文件：<input type="file" name="file"/>
+		<input type="submit"/>
+	</form>
+
 </body>
 </html>
